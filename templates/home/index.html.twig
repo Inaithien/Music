@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Music Event Management{% endblock %}
+
+{% block body %}
+    <div class="text-center my-5">
+        <h1 class="display-4">Welcome to Music Event Management!</h1>
+        <p class="lead">Find and register for exciting music events featuring your favorite artists.</p>
+        <hr class="my-4">
+
+        {% if not app.user %}
+            <p>Register or log in to browse events and artists.</p>
+            <div class="mt-4">
+                <a href="{{ path('app_login') }}" class="btn btn-primary me-2">Log In</a>
+                <a href="{{ path('app_register') }}" class="btn btn-secondary">Register</a>
+            </div>
+        {% else %}
+            <p>Welcome back, {{ app.user.email }}!</p>
+            <div class="mt-4">
+                <a href="#" class="btn btn-primary me-2">Browse Events</a>
+                <a href="#" class="btn btn-secondary">View Artists</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
