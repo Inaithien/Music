@@ -37,7 +37,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -45,7 +45,7 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            // Check if this is the first user and set as admin
+            // Check admin or user
             $userCount = $userRepository->count([]);
             if ($userCount === 0) {
                 $user->setRoles(['ROLE_ADMIN']);

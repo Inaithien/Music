@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artist: {{ artist.name }}{% endblock %}
+
+{% block body %}
+    <div class="mb-4">
+        <a href="{{ path('app_artist_index') }}" class="btn btn-outline-secondary">Back to list</a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_artist_edit', {'id': artist.id}) }}" class="btn btn-outline-primary">Edit</a>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ artist.image }}" class="img-fluid rounded" alt="{{ artist.name }}">
+        </div>
+        <div class="col-md-8">
+            <h1>{{ artist.name }}</h1>
+            <div class="my-4">
+                {{ artist.description|nl2br }}
+            </div>
+
+            <h3>Events</h3>
+            {% if artist.events|length > 0 %}
+                <div class="list-group">
+                    {% for event in artist.events %}
+                        <a href="{{ path('app_event_show', {'id': event.id}) }}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ event.name }}</h5>
+                                <small>{{ event.date|date('Y-m-d H:i') }}</small>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No upcoming events for this artist.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

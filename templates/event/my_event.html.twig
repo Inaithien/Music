@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Events{% endblock %}
+
+{% block body %}
+    <h1>My Events</h1>
+
+    <h2>Events I'm Registered For</h2>
+    {% if registeredEvents|length > 0 %}
+        <div class="row">
+            {% for event in registeredEvents %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ event.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ event.date|date('Y-m-d H:i') }}</h6>
+                            <p class="card-text">Artist: {{ event.artist.name }}</p>
+                            <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-primary">View</a>
+                            {% if event.creator != app.user %}
+                                <a href="{{ path('app_event_unregister', {'id': event.id}) }}" class="btn btn-warning">Unregister</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You are not registered for any events.</p>
+    {% endif %}
+
+    <h2>Events I've Created</h2>
+    {% if createdEvents|length > 0 %}
+        <div class="row">
+            {% for event in createdEvents %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ event.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ event.date|date('Y-m-d H:i') }}</h6>
+                            <p class="card-text">Artist: {{ event.artist.name }}</p>
+                            <div class="d-flex gap-2">
+                                <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-primary">View</a>
+                                <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-secondary">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven't created any events.</p>
+    {% endif %}
+
+    <a href="{{ path('app_event_new') }}" class="btn btn-success">Create New Event</a>
+{% endblock %}

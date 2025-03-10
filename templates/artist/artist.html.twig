@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artists{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Artists</h1>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_artist_new') }}" class="btn btn-primary">Create new artist</a>
+        {% endif %}
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" action="{{ path('app_artist_index') }}" class="row g-3">
+                <div class="col-md-10">
+                    <input type="text" name="name" class="form-control" placeholder="Search artists by name..." value="{{ searchTerm }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if artists|length > 0 %}
+        <div class="row">
+            {% for artist in artists %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ artist.image }}" class="card-img-top" alt="{{ artist.name }}" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ artist.name }}</h5>
+                            <p class="card-text">{{ artist.description|length > 100 ? artist.description|slice(0, 100) ~ '...' : artist.description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ path('app_artist_show', {'id': artist.id}) }}" class="btn btn-primary">View details</a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('app_artist_edit', {'id': artist.id}) }}" class="btn btn-secondary">Edit</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">No artists found.</div>
+    {% endif %}
+{% endblock %}

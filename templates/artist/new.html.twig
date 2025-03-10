@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Artist{% endblock %}
+
+{% block body %}
+    <h1>Create new Artist</h1>
+
+    {{ form_start(form) }}
+    <div class="mb-3">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+        {{ form_errors(form.name) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.image) }}
+        {{ form_widget(form.image) }}
+        {{ form_help(form.image) }}
+        {{ form_errors(form.image) }}
+    </div>
+
+    <div class="mb-3">
+        <button class="btn btn-primary">Create</button>
+        <a href="{{ path('app_artist_index') }}" class="btn btn-secondary">Back to list</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

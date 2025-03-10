@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}API Documentation{% endblock %}
+
+{% block body %}
+    <h1>API Documentation</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Artists</h2>
+        </div>
+        <div class="card-body">
+            <h3>GET /api/artists</h3>
+            <p>Get a list of all artists.</p>
+            <p><strong>Response:</strong> Array of artist objects</p>
+            <pre><code>[
+  {
+    "id": 1,
+    "name": "Artist Name",
+    "description": "Artist description",
+    "image": "https://example.com/image.jpg",
+    "events": [
+      {
+        "id": 1,
+        "name": "Event Name",
+        "date": "2023-01-01T20:00:00+00:00"
+      }
+    ]
+  }
+]</code></pre>
+
+            <h3>GET /api/artists/{id}</h3>
+            <p>Get details for a specific artist.</p>
+            <p><strong>Parameters:</strong></p>
+            <ul>
+                <li><code>id</code> - The ID of the artist</li>
+            </ul>
+            <p><strong>Response:</strong> Artist object</p>
+            <pre><code>{
+  "id": 1,
+  "name": "Artist Name",
+  "description": "Artist description",
+  "image": "https://example.com/image.jpg",
+  "events": [
+    {
+      "id": 1,
+      "name": "Event Name",
+      "date": "2023-01-01T20:00:00+00:00"
+    }
+  ]
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Events</h2>
+        </div>
+        <div class="card-body">
+            <h3>GET /api/events</h3>
+            <p>Get a list of all events.</p>
+            <p><strong>Response:</strong> Array of event objects</p>
+            <pre><code>[
+  {
+    "id": 1,
+    "name": "Event Name",
+    "date": "2023-01-01T20:00:00+00:00",
+    "artist": {
+      "id": 1,
+      "name": "Artist Name",
+      "description": "Artist description",
+      "image": "https://example.com/image.jpg"
+    }
+  }
+]</code></pre>
+
+            <h3>GET /api/events/{id}</h3>
+            <p>Get details for a specific event.</p>
+            <p><strong>Parameters:</strong></p>
+            <ul>
+                <li><code>id</code> - The ID of the event</li>
+            </ul>
+            <p><strong>Response:</strong> Event object</p>
+            <pre><code>{
+  "id": 1,
+  "name": "Event Name",
+  "date": "2023-01-01T20:00:00+00:00",
+  "artist": {
+    "id": 1,
+    "name": "Artist Name",
+    "description": "Artist description",
+    "image": "https://example.com/image.jpg"
+  }
+}</code></pre>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event: {{ event.name }}{% endblock %}
+
+{% block body %}
+    <div class="mb-4">
+        <a href="{{ path('app_event_index') }}" class="btn btn-outline-secondary">Back to list</a>
+        {% if app.user == event.creator %}
+            <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-outline-primary">Edit</a>
+        {% endif %}
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h1>{{ event.name }}</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Event Details</h3>
+                    <p><strong>Date:</strong> {{ event.date|date('Y-m-d H:i') }}</p>
+                    <p><strong>Organized by:</strong> {{ event.creator.email }}</p>
+
+                    <h3>Artist</h3>
+                    <div class="d-flex align-items-center mb-3">
+                        <div style="width: 100px; height: 100px; overflow: hidden; border-radius: 50%; margin-right: 20px;">
+                            <img src="{{ event.artist.image }}" style="width: 100%; height: 100%; object-fit: cover;" alt="{{ event.artist.name }}">
+                        </div>
+                        <div>
+                            <h4>{{ event.artist.name }}</h4>
+                            <a href="{{ path('app_artist_show', {'id': event.artist.id}) }}" class="btn btn-sm btn-outline-primary">View artist profile</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h3>Participants ({{ event.participants|length }})</h3>
+                    {% if event.participants|length > 0 %}
+                        <ul class="list-group">
+                            {% for participant in event.participants %}
+                                <li class="list-group-item">
+                                    {{ participant.email }}
+                                    {% if participant == event.creator %}
+                                        <span class="badge bg-primary">Organizer</span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No participants yet.</p>
+                    {% endif %}
+
+                    {% if app.user %}
+                        {% if event.participants.contains(app.user) %}
+                            {% if app.user != event.creator %}
+                                <a href="{{ path('app_event_unregister', {'id': event.id}) }}" class="btn btn-warning mt-3">Unregister</a>
+                            {% else %}
+                                <div class="alert alert-info mt-3">As the organizer, you are automatically registered.</div>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ path('app_event_register', {'id': event.id}) }}" class="btn btn-success mt-3">Register for this event</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

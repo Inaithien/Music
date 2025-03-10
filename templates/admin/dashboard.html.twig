@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+    <h1>Admin Dashboard</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Users</h5>
+                    <p class="card-text display-4">{{ user_count }}</p>
+                    <a href="{{ path('app_user_index') }}" class="btn btn-light">Manage Users</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Artists</h5>
+                    <p class="card-text display-4">{{ artist_count }}</p>
+                    <a href="{{ path('app_artist_index') }}" class="btn btn-light">Manage Artists</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Administrative Tasks</h2>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                <a href="{{ path('app_user_index') }}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">View and Manage Users</h5>
+                    </div>
+                    <p class="mb-1">View all users, see their roles, and manage user accounts.</p>
+                </a>
+                <a href="{{ path('app_artist_index') }}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Manage Artists</h5>
+                    </div>
+                    <p class="mb-1">Create, edit, and delete artists.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

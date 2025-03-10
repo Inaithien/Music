@@ -12,7 +12,7 @@ class UserController extends AbstractController
     #[Route('/information', name: 'user.index')]
     public function index(Request $request): Response
     {
-        return $this->render('user/index.html.twig', [
+        return $this->render('user.html.twig', [
             'controller_name' => 'User Information',
         ]);
     }
@@ -20,7 +20,7 @@ class UserController extends AbstractController
     #[Route('/information/{slug}', name: 'user.show')]
     public function show(Request $request, string $slug): Response
     {
-        return $this->render('user/index.html.twig', [
+        return $this->render('user.html.twig', [
             'controller_name' => 'Home Page',
             'welcome_message' => 'Welcome to homepage',
         ]);
