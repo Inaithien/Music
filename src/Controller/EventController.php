@@ -32,7 +32,7 @@ class EventController extends AbstractController
             $events = $eventRepository->findAll();
         }
 
-        return $this->render('event.html.twig', [
+        return $this->render('event/event.html.twig', [
             'events' => $events,
             'date' => $date,
         ]);
@@ -75,7 +75,6 @@ class EventController extends AbstractController
     #[Route('/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {
-        // Only the creator or an admin can edit an event
         if ($event->getCreator() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException('You cannot edit this event.');
         }
@@ -154,7 +153,7 @@ class EventController extends AbstractController
     {
         $user = $this->getUser();
 
-        return $this->render('event/my_events.html.twig', [
+        return $this->render('event/event.html.twig', [
             'registeredEvents' => $user->getRegisteredEvents(),
             'createdEvents' => $user->getCreatedEvents(),
         ]);

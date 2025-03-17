@@ -14,9 +14,19 @@ class SecurityController extends AbstractController
     {
 
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_home');
-        }
+            // Get the user object
+            $user = $this->getUser();
 
+            // Check roles explicitly from the user object
+            $roles = $user->getRoles();
+
+            // Check if ROLE_ADMIN is in the roles array
+            if (in_array('ROLE_ADMIN', $roles)) {
+                return $this->redirectToRoute('app_admin_dashboard');
+            } else {
+                return $this->redirectToRoute('app_event_index');
+            }
+        }
         $error = $authenticationUtils->getLastAuthenticationError();
 
         $lastUsername = $authenticationUtils->getLastUsername();

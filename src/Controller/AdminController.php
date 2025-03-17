@@ -28,7 +28,7 @@ class AdminController extends AbstractController
     #[Route('/users', name: 'app_user_index')]
     public function userIndex(UserRepository $userRepository): Response
     {
-        return $this->render('admin/users.html.twig', [
+        return $this->render('admin/user.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }

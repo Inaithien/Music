@@ -14,8 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[Route('/api', name: 'api_')]
 class ApiController extends AbstractController
 {
-    private $serializer;
-
+    private SerializerInterface $serializer;
     public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;

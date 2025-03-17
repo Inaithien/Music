@@ -27,7 +27,7 @@ class ArtistController extends AbstractController
             $artists = $artistRepository->findAll();
         }
 
-        return $this->render('artist.html.twig', [
+        return $this->render('artist/artist.html.twig', [
             'artists' => $artists,
             'searchTerm' => $name,
         ]);

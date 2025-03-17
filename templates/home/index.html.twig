@@ -17,8 +17,8 @@
         {% else %}
             <p>Welcome back, {{ app.user.email }}!</p>
             <div class="mt-4">
-                <a href="#" class="btn btn-primary me-2">Browse Events</a>
-                <a href="#" class="btn btn-secondary">View Artists</a>
+                <a href="{{ path('app_event_index') }}" class="btn btn-primary me-2">Browse Events</a>
+                <a href="{{ path('app_artist_index') }}" class="btn btn-secondary">View Artists</a>
             </div>
         {% endif %}
     </div>
