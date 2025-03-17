@@ -21,5 +21,8 @@
                 <a href="{{ path('app_artist_index') }}" class="btn btn-secondary">View Artists</a>
             </div>
         {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_admin_dashboard') }}" class="btn btn-danger">Admin Dashboard</a>
+        {% endif %}
     </div>
 {% endblock %}
