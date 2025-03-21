@@ -14,13 +14,10 @@ class SecurityController extends AbstractController
     {
 
         if ($this->getUser()) {
-            // Get the user object
             $user = $this->getUser();
 
-            // Check roles explicitly from the user object
             $roles = $user->getRoles();
 
-            // Check if ROLE_ADMIN is in the roles array
             if (in_array('ROLE_ADMIN', $roles)) {
                 return $this->redirectToRoute('app_admin_dashboard');
             } else {
