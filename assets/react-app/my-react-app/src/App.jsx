@@ -1,34 +1,60 @@
-import './App.css'
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { useState, useEffect } from 'react';
+import './App.css';
+import Navigation from './components/Navigation';
+import ArtistList from './pages/ArtistList';
+import ArtistDetail from './pages/ArtistDetail';
+import EventList from './pages/EventList';
+import EventDetail from './pages/EventDetail';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [activePage, setActivePage] = useState('artists');
+    const [selectedArtistId, setSelectedArtistId] = useState(null);
+    const [selectedEventId, setSelectedEventId] = useState(null);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // Reset selection when changing main pages
+    useEffect(() => {
+        setSelectedArtistId(null);
+        setSelectedEventId(null);
+    }, [activePage]);
+
+    const renderActivePage = () => {
+        if (activePage === 'artists') {
+            return selectedArtistId
+                ? <ArtistDetail
+                    artistId={selectedArtistId}
+                    onBack={() => setSelectedArtistId(null)}
+                    onEventClick={(eventId) => {
+                        setActivePage('events');
+                        setSelectedEventId(eventId);
+                    }}
+                />
+                : <ArtistList onArtistClick={setSelectedArtistId} />;
+        }
+
+        if (activePage === 'events') {
+            return selectedEventId
+                ? <EventDetail
+                    eventId={selectedEventId}
+                    onBack={() => setSelectedEventId(null)}
+                    onArtistClick={(artistId) => {
+                        setActivePage('artists');
+                        setSelectedArtistId(artistId);
+                    }}
+                />
+                : <EventList onEventClick={setSelectedEventId} />;
+        }
+
+        return <div>Page not found</div>;
+    };
+
+    return (
+        <div className="App">
+            <Navigation activePage={activePage} setActivePage={setActivePage} />
+            <div className="container mt-4">
+                {renderActivePage()}
+            </div>
+        </div>
+    );
 }
 
-export default App
+export default App;
