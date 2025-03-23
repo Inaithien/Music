@@ -4,6 +4,7 @@ import { getEvents } from '../services/api';
 const EventList = ({ onEventClick }) => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortField, setSortField] = useState('name');
     const [sortOrder, setSortOrder] = useState('asc');
@@ -11,10 +12,13 @@ const EventList = ({ onEventClick }) => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
+                setLoading(true);
                 const data = await getEvents();
-                setEvents(data);
+                console.log('Events data:', data);
+                setEvents(Array.isArray(data) ? data : []);
             } catch (error) {
                 console.error('Error fetching events:', error);
+                setError(error.message || 'Failed to load events');
             } finally {
                 setLoading(false);
             }
@@ -34,18 +38,18 @@ const EventList = ({ onEventClick }) => {
 
     const filteredAndSortedEvents = events
         .filter(event =>
-            event.name.toLowerCase().includes(searchTerm.toLowerCase())
+            event.name?.toLowerCase().includes(searchTerm.toLowerCase())
         )
         .sort((a, b) => {
             if (sortField === 'name') {
-                const nameA = a.name.toLowerCase();
-                const nameB = b.name.toLowerCase();
+                const nameA = a.name?.toLowerCase() || '';
+                const nameB = b.name?.toLowerCase() || '';
                 return sortOrder === 'asc'
                     ? nameA.localeCompare(nameB)
                     : nameB.localeCompare(nameA);
             } else if (sortField === 'date') {
-                const dateA = new Date(a.date);
-                const dateB = new Date(b.date);
+                const dateA = a.date ? new Date(a.date) : new Date(0);
+                const dateB = b.date ? new Date(b.date) : new Date(0);
                 return sortOrder === 'asc'
                     ? dateA - dateB
                     : dateB - dateA;
@@ -55,6 +59,10 @@ const EventList = ({ onEventClick }) => {
 
     if (loading) {
         return <div className="text-center mt-5"><div className="spinner-border"></div></div>;
+    }
+
+    if (error) {
+        return <div className="alert alert-danger">{error}</div>;
     }
 
     return (
@@ -96,28 +104,32 @@ const EventList = ({ onEventClick }) => {
                             <div className="card h-100">
                                 <div className="card-body">
                                     <h5 className="card-title">{event.name}</h5>
-                                    <h6 className="card-subtitle mb-2 text-muted">
-                                        {new Date(event.date).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'short',
-                                            day: 'numeric',
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        })}
-                                    </h6>
-                                    <div className="d-flex align-items-center mb-3">
-                                        <div
-                                            className="rounded-circle me-2"
-                                            style={{
-                                                width: '40px',
-                                                height: '40px',
-                                                backgroundImage: `url(${event.artist.image})`,
-                                                backgroundSize: 'cover',
-                                                backgroundPosition: 'center'
-                                            }}
-                                        ></div>
-                                        <span>{event.artist.name}</span>
-                                    </div>
+                                    {event.date && (
+                                        <h6 className="card-subtitle mb-2 text-muted">
+                                            {new Date(event.date).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'short',
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
+                                        </h6>
+                                    )}
+                                    {event.artist && (
+                                        <div className="d-flex align-items-center mb-3">
+                                            <div
+                                                className="rounded-circle me-2"
+                                                style={{
+                                                    width: '40px',
+                                                    height: '40px',
+                                                    backgroundImage: `url(${event.artist.image || ''})`,
+                                                    backgroundSize: 'cover',
+                                                    backgroundPosition: 'center'
+                                                }}
+                                            ></div>
+                                            <span>{event.artist.name}</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="card-footer">
                                     <button

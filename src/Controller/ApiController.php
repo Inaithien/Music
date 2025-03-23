@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ApiController extends AbstractController
 {
     private SerializerInterface $serializer;
+
     public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
@@ -29,7 +30,7 @@ class ApiController extends AbstractController
             'groups' => ['artist:read']
         ]);
 
-        return new JsonResponse($data, 200, [], true);
+        return $this->createCorsJsonResponse($data);
     }
 
     #[Route('/artists/{id}', name: 'artists_show', methods: ['GET'])]
@@ -39,7 +40,7 @@ class ApiController extends AbstractController
             'groups' => ['artist:read']
         ]);
 
-        return new JsonResponse($data, 200, [], true);
+        return $this->createCorsJsonResponse($data);
     }
 
     #[Route('/events', name: 'events_index', methods: ['GET'])]
@@ -51,7 +52,7 @@ class ApiController extends AbstractController
             'groups' => ['event:read']
         ]);
 
-        return new JsonResponse($data, 200, [], true);
+        return $this->createCorsJsonResponse($data);
     }
 
     #[Route('/events/{id}', name: 'events_show', methods: ['GET'])]
@@ -61,6 +62,17 @@ class ApiController extends AbstractController
             'groups' => ['event:read']
         ]);
 
-        return new JsonResponse($data, 200, [], true);
+        return $this->createCorsJsonResponse($data);
+    }
+
+    private function createCorsJsonResponse(string $data): JsonResponse
+    {
+        $response = new JsonResponse($data, 200, [], true);
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+        return $response;
     }
 }
